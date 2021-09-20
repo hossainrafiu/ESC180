@@ -34,6 +34,9 @@ if (pie != ice_cream):
 if pie ^ ice_cream:
     print("xor")
 
+if pie ^ pie:
+    print("xor")
+
 # order of operations: not, and, or
 # True <=> 1, False <=> 0
 # A and B is kind of like A*B
