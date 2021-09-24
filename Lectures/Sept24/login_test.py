@@ -4,4 +4,3 @@ if __name__ == "__main__":
     login_fun.initialization()
     login_fun.login("a", "b")
     print("hello")
-
