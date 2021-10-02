@@ -82,7 +82,7 @@ if __name__ == '__main__':
         print("Test 12 failed")
     
     lab02.undo()
-    if lab02.get_current_value() == 48:
+    if lab02.get_current_value() == 42:
         print("Test 13 passed")
     else:
         print("Test 13 failed")
