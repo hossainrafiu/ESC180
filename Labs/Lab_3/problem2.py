@@ -7,7 +7,7 @@ def cube_sum(n):
     return total
 
 def cool_cube_sum(n):
-    return n**2*(n+1)**2 / 4
+    return n**2 * (n+1)**2 / 4
 
 def check_sum(n):
     return cube_sum(n) == cool_cube_sum(n)
@@ -18,3 +18,6 @@ def check_sums_up_to_n(N):
             return False
     
     return True
+
+if __name__ == "__main__":
+    print(check_sums_up_to_n(150))

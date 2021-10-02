@@ -26,13 +26,13 @@ if __name__ == '__main__':
         print("Test 4 failed")
     
     lab02.divide(0)
-    if lab02.get_current_value() == "Error":
+    if lab02.get_current_value() == "ERROR":
         print("Test 5 passed")
     else:
         print("Test 5 failed")
     
     lab02.add(90)
-    if lab02.get_current_value() == "Error":
+    if lab02.get_current_value() == "ERROR":
         print("Test 6 passed")
     else:
         print("Test 6 failed")
@@ -51,4 +51,39 @@ if __name__ == '__main__':
     else:
         print("Test 8 failed")
 
+    lab02.initialize()
+    lab02.add(52)
+    lab02.store()
+    lab02.subtract(18)
+    lab02.subtract(-6)
+    if lab02.get_current_value() == 40:
+        print("Test 9 passed")
+    else:
+        print("Test 9 failed")
+    
+    lab02.recall()
+    if lab02.get_current_value() == 52:
+        print("Test 10 passed")
+    else:
+        print("Test 10 failed")
+    
+    lab02.initialize()
+    lab02.add(60)
+    lab02.subtract(12)
+    if lab02.get_current_value() == 48:
+        print("Test 11 passed")
+    else:
+        print("Test 11 failed")
+    
+    lab02.undo()
+    if lab02.get_current_value() == 60:
+        print("Test 12 passed")
+    else:
+        print("Test 12 failed")
+    
+    lab02.undo()
+    if lab02.get_current_value() == 48:
+        print("Test 13 passed")
+    else:
+        print("Test 13 failed")
     
