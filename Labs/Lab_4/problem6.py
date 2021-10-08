@@ -33,12 +33,12 @@ def test2():
     t0 = time.time()
     simplify_fraction(48, 120)
     t1 = time.time()
-    print("time for simple version:", t1 - t0)
+    print("time for simple version:", (t1 - t0) * 1000)
 
     t2 = time.time()
     euclid_simplify_fraction(48, 120)
     t3 = time.time()
-    print("time for euclidean version:", t3 - t2)
+    print("time for euclidean version:", (t3 - t2) * 1000)
 
 
 if __name__ == '__main__':
