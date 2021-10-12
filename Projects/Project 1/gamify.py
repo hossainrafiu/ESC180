@@ -99,7 +99,7 @@ def perform_activity(activity, duration):
         
         # Determines how much remaining time running will give 
         # +3 health points per minute
-        effective_minutes_health = get_effective_minutes_left_health(activity)
+        effective_minutes_health = get_effective_minutes_left_health_running()
         # Any duration above effective_minutes_health only gives
         # +1 health points per minute
         if effective_minutes_health >= duration:
@@ -256,12 +256,16 @@ def get_effective_minutes_left_hedons(activity):
     pass
     
 
-def get_effective_minutes_left_health(activity):
+def get_effective_minutes_left_health_running():
 
-    if activity == "running" and last_activity == "running":
+    if last_activity == "running":
         # Gets cummulative consecutive time running previously
         # and subtracts that from 180 minutes.
-        return 180 - last_activity_duration
+        # If last_activity_duration>180, there are no effective running min.
+        if last_activity_duration <= 180:
+            return 180 - last_activity_duration
+        else:
+            return 0
     else:
         return 180
 
@@ -296,73 +300,4 @@ if __name__ == '__main__':
     perform_activity("running", 170)
     print(get_cur_health())            # 700 = 210 + 160 * 3 + 10 * 1         # Test 9
     print(get_cur_hedons())            # -430 = -90 + 170 * (-2)              # Test 10
-    print("-----------")
-    initialize()
-    offer_star("running")
-    perform_activity("running", 100)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    perform_activity("textbooks", 20)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    perform_activity("resting", 130)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    offer_star("running")
-    print(most_fun_activity_minute())
-    perform_activity("resting", 110)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    perform_activity("textbooks", 100)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    perform_activity("running", 20)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    perform_activity("resting", 100)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    perform_activity("resting", 60)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    offer_star("textbooks")
-    print(most_fun_activity_minute())
-    perform_activity("running", 30)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    print(most_fun_activity_minute())
-    perform_activity("running", 20)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    print(most_fun_activity_minute())
-    perform_activity("textbooks", 50)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    perform_activity("resting", 20)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    perform_activity("textbooks", 110)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    offer_star("textbooks")
-    perform_activity("resting", 140)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    offer_star("running")
-    perform_activity("resting", 100)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    offer_star("textbooks")
-    print(most_fun_activity_minute())
-    print(most_fun_activity_minute())
-    offer_star("running")
-    perform_activity("textbooks", 60)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    perform_activity("resting", 20)
-    print(get_cur_health())
-    print(get_cur_hedons())
-    perform_activity("textbooks", 140)
-    print(get_cur_health())
-    print(get_cur_hedons())
     
