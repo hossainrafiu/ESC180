@@ -23,22 +23,35 @@ def initialize():
 
     global cur_time
     global last_activity, last_activity_duration
-    # global cur_star
+    
+    # global cur_star (don't need)
+    
     global cur_star_activity
     
-    # global last_finished
+    # global last_finished (don't need)
+    
     global bored_with_stars
 
-    # personally added
+    
+    # vvv personally added vvv
+    
+    # Resets to 120 every time a "running" or "textbooks" action is performed
+    # Keeps track of how long the person is tired
     global time_left_tired
 
-    global star_times, star_times_differences
+    # Keeps track of the times a star is offered (using cur_time)
+    global star_times
+    
+    # Keeps track of the difference in time between star times.
+    # The sum of two adjacent star times is the time span between the first and
+    # third star. (Can check if sum is <120 min. and adjust bored_with_stars)
+    global star_times_differences
     
 
     cur_hedons = 0
     cur_health = 0
     
-    # cur_star = None
+    # cur_star = None (don't need)
     cur_star_activity = None
     
     bored_with_stars = False
@@ -48,43 +61,46 @@ def initialize():
     
     cur_time = 0
     
-    # last_finished = -1000
+    # last_finished = -1000 (don't need)
     
     # personally added
-
     time_left_tired = 0
 
     star_times = []
     star_times_differences = []
 
             
-
 def star_can_be_taken(activity):
     global cur_star_activity
 
-    if activity == cur_star_activity:
+    return activity == cur_star_activity
+
+def apply_possible_star(activity):
+    if star_can_be_taken(activity):
         return 3
     else:
         return 0
-
     
 def perform_activity(activity, duration):
-    global cur_hedons, cur_health
-
+    global cur_hedons
+    global cur_health
     global cur_time
-    global last_activity, last_activity_duration
-    global cur_star, cur_star_activity
+    global last_activity
+    global last_activity_duration
+    global cur_star_activity
     
-    global last_finished
-    global bored_with_stars
-
     # personally added
     global time_left_tired
 
 
     if activity == "running":
         # Health
+        
+        # Determines how much remaining time running will give 
+        # +3 health points per minute
         effective_minutes_health = get_effective_minutes_left_health(activity)
+        # Any duration above effective_minutes_health only gives
+        # +1 health points per minute
         if effective_minutes_health >= duration:
             cur_health += 3 * duration
         
@@ -93,22 +109,28 @@ def perform_activity(activity, duration):
             cur_health += 1 * (duration - effective_minutes_health)
         
         # Hedons
+        # Checks if person is tired (time_left_tired > 0)
         if time_left_tired <= 0:
             if duration <= 10:
-                cur_hedons += (2 + star_can_be_taken(activity)) * duration
+                cur_hedons += (2 + apply_possible_star(activity)) * duration
             
+            # Applies star offer and non-tired, running hedons condition
+            # only for first 10 min. 
             else:
-                cur_hedons += (2 + star_can_be_taken(activity)) * 10 + (-2) * (duration-10)
+                cur_hedons += (2 + apply_possible_star(activity)) * 10
+                cur_hedons += (-2) * (duration - 10)
         
         else:
             if duration <= 10:
-                cur_hedons += (-2 + star_can_be_taken(activity)) * duration
+                cur_hedons += (-2 + apply_possible_star(activity)) * duration
             
+            # Applies star offer and tired, running hedons condition
+            # only for first 10 min. 
             else:
-                cur_hedons += (-2 + star_can_be_taken(activity)) * 10
+                cur_hedons += (-2 + apply_possible_star(activity)) * 10
                 cur_hedons += (-2) * (duration - 10)
         
-
+        # Resets tired timer to 2 hours (120 min.)
         time_left_tired = 120
         update_last_activity(activity, duration)
 
@@ -120,23 +142,30 @@ def perform_activity(activity, duration):
         # Hedons
         if time_left_tired <= 0:
             if duration <= 10:
-                cur_hedons += (1 + star_can_be_taken(activity)) * duration
+                cur_hedons += (1 + apply_possible_star(activity)) * duration
             
+            # Applies star offer and non-tired, textbooks hedons condition
+            # only for first 10 min.
             elif duration <= 20:
-                cur_hedons += (1 + star_can_be_taken(activity)) * 10
+                cur_hedons += (1 + apply_possible_star(activity)) * 10
                 cur_hedons += (1) * (duration-10)
         
             else:
-                cur_hedons += (10 * star_can_be_taken(activity)) + 10 + (-1) * (duration-20)
+                cur_hedons += (1 + apply_possible_star(activity)) * 10
+                cur_hedons += (1) * 10 
+                cur_hedons += (-1) * (duration - 20)
         
         else:
             if duration <= 10:
-                cur_hedons += (-2 + star_can_be_taken(activity)) * duration
+                cur_hedons += (-2 + apply_possible_star(activity)) * duration
             
+            # Applies star offer and tired, textbooks hedons condition
+            # only for first 10 min.
             else:
-                cur_hedons += (-2 + star_can_be_taken(activity)) * 10
+                cur_hedons += (-2 + apply_possible_star(activity)) * 10
                 cur_hedons += (-2) * (duration - 10)
 
+        # Resets tired timer to 2 hours (120 min.)
         time_left_tired = 120
         last_activity = "textbooks"
         last_activity_duration = duration
@@ -170,18 +199,22 @@ def offer_star(activity):
             star_times_differences.append(star_times[len(star_times)-1] - \
                                             star_times[len(star_times)-2])
         
-        for time in range(len(star_times_differences)-1):
-            time_between_three_stars = star_times_differences[time] + \
-                                        star_times_differences[time+1]
-        
-            if (time_between_three_stars<120):
-                bored_with_stars = True
+            # Checks the time between every two consecutive 
+            # star_time_differences
+            # (time between every three star)
+            for time in range(len(star_times_differences)-1):
+                time_between_three_stars = star_times_differences[time] + \
+                                            star_times_differences[time+1]
+            
+                if (time_between_three_stars<120):
+                    bored_with_stars = True
 
     if bored_with_stars != True:
         cur_star_activity = activity
         
 
 def most_fun_activity_minute():
+    # Determined from hedons conditions and possible star offers
     if time_left_tired <= 0:
         if cur_star_activity == "textbooks":
             return "textbooks"
@@ -200,6 +233,8 @@ def most_fun_activity_minute():
 
 
 # personally added
+# Specifically made for the running activity
+# Keeps track of consecutive running durations in last_activity_duration
 def update_last_activity(activity, duration):
     global last_activity, last_activity_duration
 
@@ -213,6 +248,7 @@ def update_last_activity(activity, duration):
 #These functions are not required, but we recommend that you use them anyway
 #as helper functions
 
+# Didn't use
 def get_effective_minutes_left_hedons(activity):
     '''Return the number of minutes during which the user will get the full
     amount of hedons for activity activity'''
@@ -222,18 +258,19 @@ def get_effective_minutes_left_hedons(activity):
 def get_effective_minutes_left_health(activity):
 
     if activity == "running" and last_activity == "running":
+        # Gets cummulative consecutive time running previously
+        # and subtracts that from 180 minutes.
         return 180 - last_activity_duration
     else:
         return 180
 
-
+# Didn't use
 def estimate_hedons_delta(activity, duration):
     '''Return the amount of hedons the user would get for performing activity
     activity for duration minutes'''
     pass
             
-
-
+# Didn't use
 def estimate_health_delta(activity, duration):
     pass
         
