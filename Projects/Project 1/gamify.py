@@ -76,7 +76,8 @@ def star_can_be_taken(activity):
     return activity == cur_star_activity
 
 def apply_possible_star(activity):
-    if star_can_be_taken(activity):
+    # Checks if star can apply to activity and person isn't bored with stars
+    if star_can_be_taken(activity) and bored_with_stars != True:
         return 3
     else:
         return 0
@@ -204,7 +205,7 @@ def offer_star(activity):
             # (time between every three star)
             for time in range(len(star_times_differences)-1):
                 time_between_three_stars = star_times_differences[time] + \
-                                            star_times_differences[time+1]
+                    star_times_differences[time+1]
             
                 if (time_between_three_stars<120):
                     bored_with_stars = True
@@ -295,5 +296,73 @@ if __name__ == '__main__':
     perform_activity("running", 170)
     print(get_cur_health())            # 700 = 210 + 160 * 3 + 10 * 1         # Test 9
     print(get_cur_hedons())            # -430 = -90 + 170 * (-2)              # Test 10
-    
+    print("-----------")
+    initialize()
+    offer_star("running")
+    perform_activity("running", 100)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    perform_activity("textbooks", 20)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    perform_activity("resting", 130)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    offer_star("running")
+    print(most_fun_activity_minute())
+    perform_activity("resting", 110)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    perform_activity("textbooks", 100)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    perform_activity("running", 20)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    perform_activity("resting", 100)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    perform_activity("resting", 60)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    offer_star("textbooks")
+    print(most_fun_activity_minute())
+    perform_activity("running", 30)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    print(most_fun_activity_minute())
+    perform_activity("running", 20)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    print(most_fun_activity_minute())
+    perform_activity("textbooks", 50)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    perform_activity("resting", 20)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    perform_activity("textbooks", 110)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    offer_star("textbooks")
+    perform_activity("resting", 140)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    offer_star("running")
+    perform_activity("resting", 100)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    offer_star("textbooks")
+    print(most_fun_activity_minute())
+    print(most_fun_activity_minute())
+    offer_star("running")
+    perform_activity("textbooks", 60)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    perform_activity("resting", 20)
+    print(get_cur_health())
+    print(get_cur_hedons())
+    perform_activity("textbooks", 140)
+    print(get_cur_health())
+    print(get_cur_hedons())
     
