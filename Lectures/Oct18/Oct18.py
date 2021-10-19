@@ -25,13 +25,14 @@ course = f"{name}{num}"
 
 print(course)
 
+x = 0
 s = "x = 2"
 exec(s)
 print(x)
 
 s = "def f(): \n    return 42"
 exec(s)
-print(f())
+# print(f())
 
 # print all strings of length n over the alphabet
 
@@ -63,7 +64,7 @@ def gen_nested_loop(n):
 alphabet = "abcd"
 code = gen_nested_loop(4)
 exec(code)
-gen_passwords(alphabet)
+# gen_passwords(alphabet)
 
 def longest_run(s,c):
     """Return the length of the longest fun of the character c in the string s
