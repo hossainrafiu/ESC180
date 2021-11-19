@@ -29,16 +29,6 @@ def is_bounded(board, y_end, x_end, length, d_y, d_x):
 
 def detect_row(board, col, y_start, x_start, length, d_y, d_x):
     open_seq_count, semi_open_seq_count = 0,0
-    
-    for i in range(8):
-        o, s = find_rows(board, col, y_start+d_y*i, x_start+d_x*i, length, d_y, d_x)
-        open_seq_count += o
-        semi_open_seq_count += s
-    return open_seq_count, semi_open_seq_count
-
-def find_rows(board, col, y_start, x_start, length, d_y, d_x):
-    open_seq_count, semi_open_seq_count = 0,0
-    
     if is_sequence(board, col, y_start, x_start, length, d_y, d_x) == False:
         return (0,0)
     
@@ -53,6 +43,7 @@ def find_rows(board, col, y_start, x_start, length, d_y, d_x):
                 open_seq_count = 1
             else:
                 semi_open_seq_count = 1
+
     return open_seq_count, semi_open_seq_count
 
 
@@ -61,41 +52,15 @@ def detect_rows(board, col, length):
     open_seq_count, semi_open_seq_count = 0, 0
 
     directions = [[0,1],[1,0],[1,1],[1,-1]]
-    
-    d_y = 0 ; d_x = 1
-    for y_start in range(len(board)):
-        o, s = detect_row(board, col, y_start, 0, length, d_y, d_x)
-        open_seq_count += o
-        semi_open_seq_count += s
-    
-    d_y = 1 ; d_x = 0
-    for x_start in range(len(board)):
-        o, s = detect_row(board, col, 0, x_start, length, d_y, d_x)
-        open_seq_count += o
-        semi_open_seq_count += s
-    
-    d_y = 1 ; d_x = 1
-    for y_start in range(len(board)):
-        o, s = detect_row(board, col, y_start, 0, length, d_y, d_x)
-        open_seq_count += o
-        semi_open_seq_count += s
-    for x_start in range(1,len(board)):
-        o, s = detect_row(board, col, 0, x_start, length, d_y, d_x)
-        open_seq_count += o
-        semi_open_seq_count += s
-
-    d_y = 1 ; d_x = -1
-    for y_start in range(len(board)):
-        o, s = detect_row(board, col, y_start, len(board)-1, length, d_y, d_x)
-        open_seq_count += o
-        semi_open_seq_count += s
-    for x_start in range(len(board)-1):
-        o, s = detect_row(board, col, 0, x_start, length, d_y, d_x)
-        open_seq_count += o
-        semi_open_seq_count += s
-        #TEST
-        # if o == 1 or s == 1:
-        #     print(col, y_start, x_start, length, d_y, d_x)
+    for d_y, d_x in directions:
+        for y_start in range(len(board)):
+            for x_start in range(len(board[y_start])):
+                o, s = detect_row(board, col, y_start, x_start, length, d_y, d_x)
+                open_seq_count += o
+                semi_open_seq_count += s
+                #TEST
+                # if o == 1 or s == 1:
+                #     print(col, y_start, x_start, length, d_y, d_x)
 
     return open_seq_count, semi_open_seq_count
 
@@ -298,7 +263,7 @@ def test_detect_row():
     x = 5; y = 1; d_x = 0; d_y = 1; length = 3
     put_seq_on_board(board, y, x, d_y, d_x, length, "w")
     print_board(board)
-    if detect_row(board, "w", 0,x,length,d_y,d_x) == (1,0):
+    if detect_row(board, "w", y,x,length,d_y,d_x) == (1,0):
         print("TEST CASE for detect_row PASSED")
     else:
         print("TEST CASE for detect_row FAILED")
@@ -315,13 +280,13 @@ def test_detect_rows():
 
 def test_search_max():
     board = make_empty_board(8)
-    x = 5; y = 0; d_x = 0; d_y = 1; length = 4; col = 'w'
+    x = 5; y = 0; d_x = -1; d_y = 1; length = 4; col = 'w'
     put_seq_on_board(board, y, x, d_y, d_x, length, col)
-    x = 6; y = 0; d_x = 0; d_y = 1; length = 4; col = 'b'
+    x = 6; y = 0; d_x = 0; d_y = 1; length = 3; col = 'b'
     put_seq_on_board(board, y, x, d_y, d_x, length, col)
     print_board(board)
-    print(search_max(board))
-    if search_max(board) == (4,6):
+    #print(search_max(board))
+    if search_max(board) == (4,5):
         print("TEST CASE for search_max PASSED")
     else:
         print("TEST CASE for search_max FAILED")
@@ -453,10 +418,5 @@ def some_tests():
             
 if __name__ == '__main__':
     some_tests()
-    test_detect_row()
-    test_detect_rows()
-    test_is_bounded()
-    test_is_empty()
-    test_search_max()
     #play_gomoku(8)
     
