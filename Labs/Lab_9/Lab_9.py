@@ -1,5 +1,40 @@
 import urllib.request
 
+def top10(L):
+	top = []
+	
+	for i in range(10):
+		x = max(L)
+		top.append(x)
+		L.remove(x)
+
+	return top
+
+def inv_dict(d):
+	new = {}
+	
+	for key, value in d.items():
+		if value in new.keys():
+			new[value].append(key)
+		else:
+			new[value] = [key]
+
+	return new
+
+def top10words(d):
+	top = []
+	
+	while len(top)<10:
+		count = max(d.keys())
+		
+		for word in d[count]:
+			if len(top)<10:
+				top.append(word)
+		
+		del d[count]
+	
+	return top
+
 def choose_variant(varients):
     appearances = []
     for varient in varients:
@@ -20,5 +55,6 @@ def choose_variant(varients):
         print("varient:",varient, "-", results)
         appearances.append(int(results.replace(",", "")))
     return varients[appearances.index(max(appearances))]
-    
-print(choose_variant(["five-year anniversary", "fifth anniversary"]))
+
+
+print(choose_variant( ["top ranked school uoft", "top ranked school waterloo"]))
