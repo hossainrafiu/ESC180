@@ -28,7 +28,15 @@ def cosine_similarity(vec1, vec2):
 
     if (norm(vec1)*norm(vec2)) == 0:
         return -1
-    return top_sum / (norm(vec1)*norm(vec2))
+
+    sum1 = 0
+    sum2 = 0
+    for i in vec1:
+        sum1 += vec1[i] * vec1[i]
+    for i in vec2:
+        sum2 += vec2[i] * vec2[i]
+    
+    return top_sum / (math.sqrt(sum1*sum2))
 
 
 def build_semantic_descriptors(sentences):
@@ -83,6 +91,7 @@ def most_similar_word(word, choices, semantic_descriptors, similarity_fn):
         #print(semantic_descriptors[word])
         #print(semantic_descriptors[choice])
         score = similarity_fn(semantic_descriptors[word], semantic_descriptors[choice])
+        #score = round(score,10)
         #print(score)
         choices_scores.append(score)
     return choices[choices_scores.index(max(choices_scores))]
@@ -119,7 +128,7 @@ if __name__ == "__main__":
     #     ["however", "i", "know", "nothing", "at", "all", "about", "my",
     #     "disease", "and", "do", "not", "know", "for", "certain", "what", "ails", "me"]]))
     t1 = time.time()
-    sem_descriptors = build_semantic_descriptors_from_files(["wp.txt", "sw.txt"])
+    sem_descriptors = build_semantic_descriptors_from_files(["wp.txt","sw.txt"])
     res = run_similarity_test("test.txt", sem_descriptors, cosine_similarity)
     print(res, "of the guesses were correct")
     t2 = time.time()
