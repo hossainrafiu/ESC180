@@ -1,6 +1,15 @@
 # ESC180
 ESC180 - Introduction to Computer Programming - Labs/Projects
 
+# Project 1
+Created an RPG game with points, user-states, and tracked time for tasks completed.
+
+# Project 2
+Created a gomoku game in python with complete analysis code on points calculation and winner of match.
+
+# Project 3
+Semantic Similarity - Can analyze and guess potential synonyms of words
+
 # Lab 1
 Learning to use Conditional Statements, functions, and arguments.
 
